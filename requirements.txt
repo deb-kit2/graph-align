@@ -1,0 +1,4 @@
+transformers
+git+https://github.com/facebookresearch/sam2.git
+numpy
+Pillow
