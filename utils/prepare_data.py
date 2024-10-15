@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import torch
 from sam2.sam2_image_predictor import SAM2ImagePredictor
 
+from numpy.typing import NDArray
 
 def parse_args() :
     parser = argparse.ArgumentParser()
@@ -27,13 +28,21 @@ def parse_args() :
 
 
 @torch.inference_mode()
-def prepare_mask(image, predictor: SAM2ImagePredictor, input_box) :
+def prepare_mask(
+    image: NDArray, 
+    predictor: SAM2ImagePredictor, 
+    input_box: NDArray) -> Image.Image :
+    
     """
-    image : numpy array,
-    predictor : SAM2ImagePredictor instance,
-    inout_box : numpy array in [x_min, y_min, x_max, y_max] format
+    Converts a given bounding-box to a segmentation mask.
 
-    Returns a PIL Image object containing the segmentaion mask.
+    Args:
+        image (NDArray): RGB image.
+        predictor (SAM2ImagePredictor): Initialized instance.
+        input_box (NDArray): Bounding box in [x_min, y_min, x_max, y_max] format.
+
+    Returns:
+        Image.Image: Segmentation mask with the same dimensions as `input_image`.
     """
 
     predictor.set_image(image)
